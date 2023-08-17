@@ -19,7 +19,7 @@ image_path = os.listdir("./data")
 # 随机选取一张图片
 # inp = input('请输入图片名称：')
 image_path = "./data/" + random.choice(image_path)
-# image_path = './sample/' + inp
+# image_path = './123.png'
 weight = "./yolov3-tiny_17000.weights"
 cfg = "./yolov3-tiny.cfg"
 img = cv2.imread(image_path)
@@ -82,6 +82,7 @@ for i, j in enumerate(down_img):
     location_down[i+1] = [img[j[1]:j[1]+j[3], j[0]:j[0]+j[2]].astype('float64') / 255.0, j]
 
 new_list = []
+rate = []
 for down_i, down_img_ in location_down.items():
     #  先是读取下面的图
     temp = []
@@ -92,11 +93,32 @@ for down_i, down_img_ in location_down.items():
         temp.append(predict[0][0])
     temp_ = temp.index(max(temp))
     new_list.append([down_img_[1], temp_])
+    rate.append(max(temp))
+    
+# 如果在new_list出现重复的序号，就计算谁的概率大，概率最小那个替换为不同的
+for i in range(len(new_list)):
+    for j in range(len(new_list)):
+        if i != j:
+            if new_list[i][1] == new_list[j][1]:
+                if rate[i] > rate[j]:
+                    new_list[j][1] = new_list[j][1] + 1
+                else:
+                    new_list[i][1] = new_list[i][1] + 1
+                    
+            
+    
+select_location = []
 
 for (box, pos) in new_list:
     x, y, w, h = box[0], box[1], box[2], box[3]
     x1, y1, x2, y2 = x, y, x + w, y + h
+    select_location.append([x1, y1, x2, y2, pos+1])
     cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255))
     cv2.putText(img, str(pos+1), (x1, y1), cv2.FONT_HERSHEY_PLAIN, 1, color, thickness)
+# print(select_location)
+# 按照最后的位置排序从小到大
+select_location = sorted(select_location, key=lambda x_: x_[4])
+print(select_location)
+
 cv2.imshow('1', img)
 cv2.waitKey(0)
