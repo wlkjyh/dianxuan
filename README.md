@@ -19,12 +19,31 @@
 #### 环境安装
 安装环境，我用到的是python3.10
 ```
-conda create -n geetest python=3.10
+conda create -n geetest python=3.8
 ```
 
 安装必要的环境
 ```
 pip3 install -r requirement.txt
+```
+### CUDA安装
+
+换conda源
+```
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free 
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/pro
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/pkgs/main/
+conda config --add channels  https://mirrors.ustc.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.ustc.edu.cn/anaconda/cloud/conda-forge/
+conda config --set show_channel_urls yes
+```
+
+安装cuda和 cudnn
+```
+conda install cudnn=8.1.0.77 cudatoolkit=11.2.0 
 ```
 
 #### 数据准备
