@@ -17,7 +17,7 @@
 下载数据集和预训练模型：https://systems.lanzout.com/iWUqz15mo57a
 
 #### 环境安装
-安装环境，我用到的是python3.10
+安装环境，我用到的是python3.8
 ```
 conda create -n geetest python=3.8
 ```
